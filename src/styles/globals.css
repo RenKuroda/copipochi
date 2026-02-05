@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-sans: 'Inter', 'Noto Sans JP', sans-serif;
+  --font-family-heading: 'Outfit', 'Noto Sans JP', sans-serif;
+
+  --color-background-light: #FAFAFA;
+  --color-background-dark: #0A0A0A;
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #171717;
+  --color-border-light: #E5E5E5;
+  --color-border-dark: #262626;
+  --color-text-primary-light: #0A0A0A;
+  --color-text-primary-dark: #FAFAFA;
+  --color-text-secondary-light: #737373;
+  --color-text-secondary-dark: #A3A3A3;
+  --color-accent-light: #3B82F6;
+  --color-accent-dark: #60A5FA;
+
+  --color-snippet-blue-bg: #DBEAFE;
+  --color-snippet-blue-border: #93C5FD;
+  --color-snippet-blue-text: #1E40AF;
+  --color-snippet-blue-dark-bg: #1E3A5F;
+  --color-snippet-blue-dark-border: #3B82F6;
+  --color-snippet-blue-dark-text: #93C5FD;
+
+  --color-snippet-purple-bg: #EDE9FE;
+  --color-snippet-purple-border: #C4B5FD;
+  --color-snippet-purple-text: #5B21B6;
+  --color-snippet-purple-dark-bg: #3B2876;
+  --color-snippet-purple-dark-border: #8B5CF6;
+  --color-snippet-purple-dark-text: #C4B5FD;
+
+  --color-snippet-pink-bg: #FCE7F3;
+  --color-snippet-pink-border: #F9A8D4;
+  --color-snippet-pink-text: #9D174D;
+  --color-snippet-pink-dark-bg: #5C1836;
+  --color-snippet-pink-dark-border: #EC4899;
+  --color-snippet-pink-dark-text: #F9A8D4;
+
+  --color-snippet-green-bg: #D1FAE5;
+  --color-snippet-green-border: #6EE7B7;
+  --color-snippet-green-text: #065F46;
+  --color-snippet-green-dark-bg: #134E3A;
+  --color-snippet-green-dark-border: #10B981;
+  --color-snippet-green-dark-text: #6EE7B7;
+
+  --color-snippet-orange-bg: #FFEDD5;
+  --color-snippet-orange-border: #FDBA74;
+  --color-snippet-orange-text: #9A3412;
+  --color-snippet-orange-dark-bg: #5C3118;
+  --color-snippet-orange-dark-border: #F97316;
+  --color-snippet-orange-dark-text: #FDBA74;
+
+  --color-snippet-gray-bg: #F3F4F6;
+  --color-snippet-gray-border: #D1D5DB;
+  --color-snippet-gray-text: #374151;
+  --color-snippet-gray-dark-bg: #374151;
+  --color-snippet-gray-dark-border: #6B7280;
+  --color-snippet-gray-dark-text: #D1D5DB;
+
+  --animate-pop-in: pop-in 0.3s ease-out;
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+
+  @keyframes pop-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  --color-background: var(--color-background-light);
+  --color-surface: var(--color-surface-light);
+  --color-border: var(--color-border-light);
+  --color-text-primary: var(--color-text-primary-light);
+  --color-text-secondary: var(--color-text-secondary-light);
+  --color-accent: var(--color-accent-light);
+}
+
+.dark {
+  --color-background: var(--color-background-dark);
+  --color-surface: var(--color-surface-dark);
+  --color-border: var(--color-border-dark);
+  --color-text-primary: var(--color-text-primary-dark);
+  --color-text-secondary: var(--color-text-secondary-dark);
+  --color-accent: var(--color-accent-dark);
+}
+
+html {
+  font-family: var(--font-family-sans);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  color: var(--color-text-primary);
+  transition: all 0.2s ease;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+/* Snippet color classes */
+.snippet-blue {
+  background-color: var(--color-snippet-blue-bg);
+  border-color: var(--color-snippet-blue-border);
+  color: var(--color-snippet-blue-text);
+}
+
+.dark .snippet-blue {
+  background-color: var(--color-snippet-blue-dark-bg);
+  border-color: var(--color-snippet-blue-dark-border);
+  color: var(--color-snippet-blue-dark-text);
+}
+
+.snippet-purple {
+  background-color: var(--color-snippet-purple-bg);
+  border-color: var(--color-snippet-purple-border);
+  color: var(--color-snippet-purple-text);
+}
+
+.dark .snippet-purple {
+  background-color: var(--color-snippet-purple-dark-bg);
+  border-color: var(--color-snippet-purple-dark-border);
+  color: var(--color-snippet-purple-dark-text);
+}
+
+.snippet-pink {
+  background-color: var(--color-snippet-pink-bg);
+  border-color: var(--color-snippet-pink-border);
+  color: var(--color-snippet-pink-text);
+}
+
+.dark .snippet-pink {
+  background-color: var(--color-snippet-pink-dark-bg);
+  border-color: var(--color-snippet-pink-dark-border);
+  color: var(--color-snippet-pink-dark-text);
+}
+
+.snippet-green {
+  background-color: var(--color-snippet-green-bg);
+  border-color: var(--color-snippet-green-border);
+  color: var(--color-snippet-green-text);
+}
+
+.dark .snippet-green {
+  background-color: var(--color-snippet-green-dark-bg);
+  border-color: var(--color-snippet-green-dark-border);
+  color: var(--color-snippet-green-dark-text);
+}
+
+.snippet-orange {
+  background-color: var(--color-snippet-orange-bg);
+  border-color: var(--color-snippet-orange-border);
+  color: var(--color-snippet-orange-text);
+}
+
+.dark .snippet-orange {
+  background-color: var(--color-snippet-orange-dark-bg);
+  border-color: var(--color-snippet-orange-dark-border);
+  color: var(--color-snippet-orange-dark-text);
+}
+
+.snippet-gray {
+  background-color: var(--color-snippet-gray-bg);
+  border-color: var(--color-snippet-gray-border);
+  color: var(--color-snippet-gray-text);
+}
+
+.dark .snippet-gray {
+  background-color: var(--color-snippet-gray-dark-bg);
+  border-color: var(--color-snippet-gray-dark-border);
+  color: var(--color-snippet-gray-dark-text);
+}
