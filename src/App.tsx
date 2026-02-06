@@ -15,6 +15,7 @@ function AppContent() {
     addSnippet,
     updateSnippet,
     deleteSnippet,
+    reorderSnippets,
     needsMerge,
     localSnippetsForMerge,
     cloudSnippetsForMerge,
@@ -71,6 +72,7 @@ function AppContent() {
         onEdit={handleEditClick}
         onDelete={deleteSnippet}
         onAddClick={handleAddClick}
+        onReorder={reorderSnippets}
       />
 
       <SnippetModal

@@ -17,6 +17,16 @@ function snippetReducer(state: Snippet[], action: SnippetAction): Snippet[] {
       );
     case 'DELETE_SNIPPET':
       return state.filter((s) => s.id !== action.payload);
+    case 'REORDER_SNIPPETS': {
+      const { activeId, overId } = action.payload;
+      const oldIndex = state.findIndex((s) => s.id === activeId);
+      const newIndex = state.findIndex((s) => s.id === overId);
+      if (oldIndex === -1 || newIndex === -1) return state;
+      const newState = [...state];
+      const [removed] = newState.splice(oldIndex, 1);
+      newState.splice(newIndex, 0, removed);
+      return newState;
+    }
     default:
       return state;
   }
@@ -36,6 +46,7 @@ interface SnippetsContextValue {
   addSnippet: (label: string, content: string, color: SnippetColor) => void;
   updateSnippet: (id: string, label: string, content: string, color: SnippetColor) => void;
   deleteSnippet: (id: string) => void;
+  reorderSnippets: (activeId: string, overId: string) => void;
   importSnippets: (data: Snippet[]) => void;
   exportSnippets: () => void;
   isSyncing: boolean;
@@ -262,6 +273,51 @@ export function SnippetsProvider({ children }: { children: ReactNode }) {
     }
   }, [snippets, isAuthenticated, syncToCloud]);
 
+  // Sync all snippets order to cloud
+  const syncAllToCloud = useCallback(async (snippetsToSync: Snippet[]) => {
+    if (!supabase || !user) return;
+
+    setIsSyncing(true);
+    try {
+      // Update each snippet with its order
+      for (let i = 0; i < snippetsToSync.length; i++) {
+        const snippet = snippetsToSync[i];
+        await supabase
+          .from('snippets')
+          .upsert({
+            id: snippet.id,
+            user_id: user.id,
+            label: snippet.label,
+            content: snippet.content,
+            color: snippet.color,
+            display_order: i,
+            updated_at: new Date().toISOString(),
+          });
+      }
+    } catch (error) {
+      console.error('Sync order error:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [user]);
+
+  const reorderSnippets = useCallback((activeId: string, overId: string) => {
+    dispatch({ type: 'REORDER_SNIPPETS', payload: { activeId, overId } });
+
+    // Sync new order to cloud
+    if (isAuthenticated) {
+      // Get new order after reorder
+      const oldIndex = snippets.findIndex((s) => s.id === activeId);
+      const newIndex = snippets.findIndex((s) => s.id === overId);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newSnippets = [...snippets];
+        const [removed] = newSnippets.splice(oldIndex, 1);
+        newSnippets.splice(newIndex, 0, removed);
+        syncAllToCloud(newSnippets);
+      }
+    }
+  }, [snippets, isAuthenticated, syncAllToCloud]);
+
   const importSnippets = useCallback(async (data: Snippet[]) => {
     dispatch({ type: 'SET_SNIPPETS', payload: data });
 
@@ -302,6 +358,7 @@ export function SnippetsProvider({ children }: { children: ReactNode }) {
         addSnippet,
         updateSnippet,
         deleteSnippet,
+        reorderSnippets,
         importSnippets,
         exportSnippets,
         isSyncing,

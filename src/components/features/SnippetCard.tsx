@@ -1,6 +1,8 @@
 import type { Snippet } from '@/types';
 import { useClipboard } from '@/hooks/useClipboard';
 import { cn } from '@/utils/cn';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface SnippetCardProps {
   snippet: Snippet;
@@ -40,6 +42,22 @@ export function SnippetCard({ snippet, isEditMode, onEdit, onDelete }: SnippetCa
   const { isCopied, copy } = useClipboard();
   const colors = colorClasses[snippet.color] || colorClasses.gray;
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: snippet.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 1000 : 'auto',
+  };
+
   const handleClick = async () => {
     if (isEditMode) {
       onEdit(snippet);
@@ -56,7 +74,32 @@ export function SnippetCard({ snippet, isEditMode, onEdit, onDelete }: SnippetCa
   };
 
   return (
-    <div className="relative group animate-pop-in">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        'relative group animate-pop-in',
+        isDragging && 'cursor-grabbing'
+      )}
+    >
+      {/* Drag handle - visible at top-left */}
+      <button
+        {...attributes}
+        {...listeners}
+        className="absolute -top-2 -left-2 z-10 w-7 h-7
+                   bg-[var(--color-surface)] text-[var(--color-text-secondary)]
+                   rounded-full border border-[var(--color-border)]
+                   flex items-center justify-center
+                   shadow-sm hover:shadow-md hover:bg-[var(--color-accent)] hover:text-white
+                   cursor-grab active:cursor-grabbing
+                   opacity-0 group-hover:opacity-100 transition-all duration-200"
+        aria-label="ドラッグして並び替え"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+        </svg>
+      </button>
+
       {/* Delete button */}
       {isEditMode && (
         <button

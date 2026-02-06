@@ -19,7 +19,8 @@ export type SnippetAction =
   | { type: 'SET_SNIPPETS'; payload: Snippet[] }
   | { type: 'ADD_SNIPPET'; payload: Snippet }
   | { type: 'UPDATE_SNIPPET'; payload: Snippet }
-  | { type: 'DELETE_SNIPPET'; payload: string };
+  | { type: 'DELETE_SNIPPET'; payload: string }
+  | { type: 'REORDER_SNIPPETS'; payload: { activeId: string; overId: string } };
 
 // Auth types
 export interface User {
