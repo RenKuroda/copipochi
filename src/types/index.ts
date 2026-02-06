@@ -1,5 +1,7 @@
 export type SnippetColor = 'blue' | 'purple' | 'pink' | 'green' | 'orange' | 'gray';
 
+export type CategoryNames = Record<SnippetColor, string>;
+
 export interface Snippet {
   id: string;
   label: string;

@@ -3,6 +3,7 @@ import type { Snippet, SnippetColor } from '@/types';
 import { AuthProvider } from '@/hooks/useAuth';
 import { ThemeProvider } from '@/hooks/useTheme';
 import { SnippetsProvider, useSnippets } from '@/hooks/useSnippets';
+import { CategoriesProvider } from '@/hooks/useCategories';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { SnippetGrid } from '@/components/features/SnippetGrid';
@@ -58,6 +59,16 @@ function AppContent() {
     setIsEditMode((prev) => !prev);
   }, []);
 
+  const handleChangeColor = useCallback(
+    (id: string, newColor: SnippetColor) => {
+      const snippet = snippets.find((s) => s.id === id);
+      if (snippet) {
+        updateSnippet(id, snippet.label, snippet.content, newColor);
+      }
+    },
+    [snippets, updateSnippet]
+  );
+
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-12 py-8 lg:py-12 max-w-7xl mx-auto">
       <Header
@@ -73,6 +84,7 @@ function AppContent() {
         onDelete={deleteSnippet}
         onAddClick={handleAddClick}
         onReorder={reorderSnippets}
+        onChangeColor={handleChangeColor}
       />
 
       <SnippetModal
@@ -100,9 +112,11 @@ export default function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <SnippetsProvider>
-          <AppContent />
-        </SnippetsProvider>
+        <CategoriesProvider>
+          <SnippetsProvider>
+            <AppContent />
+          </SnippetsProvider>
+        </CategoriesProvider>
       </ThemeProvider>
     </AuthProvider>
   );

@@ -55,6 +55,7 @@ export const STORAGE_KEYS = {
   SNIPPETS: 'copipochi_v4_snippets',
   THEME: 'copipochi_theme',
   GUEST_SNIPPETS: 'copipochi_guest_snippets',
+  CATEGORY_NAMES: 'copipochi_category_names',
 } as const;
 
 export const AUTH_CONFIG = {
