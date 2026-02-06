@@ -21,7 +21,7 @@ function applyTheme(resolvedTheme: 'light' | 'dark') {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    return safeGetItem<Theme>(STORAGE_KEYS.THEME, 'system');
+    return safeGetItem<Theme>(STORAGE_KEYS.THEME, 'light');
   });
 
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
